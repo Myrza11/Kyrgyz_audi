@@ -50,6 +50,19 @@ class CustomUserLoginView(TokenObtainPairView):
     pass
 
 
+class CustomUserTokenRefreshView(APIView):
+    
+    def post(self, request, *args, **kwargs):
+        try:
+            refresh_token = request.data['refresh']
+            token = RefreshToken(refresh_token)
+            access_token = str(token.access_token)
+            return Response({'access': access_token,
+                             'refresh':token}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_401_UNAUTHORIZED)
+        
+
 class ForgotPasswordView(generics.CreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = ForgotPasswordSerializer

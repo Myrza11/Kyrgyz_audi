@@ -5,6 +5,7 @@ from rest_framework_simplejwt.views import TokenBlacklistView
 urlpatterns = [
     path('register/', UserRegistrationView.as_view()),
     path('login/', CustomUserLoginView.as_view()),
+    path('refresh-token/', CustomUserTokenRefreshView.as_view()),
     path('forgot-password/', ForgotPasswordView.as_view()),
     path('reset-password/', ResetPasswordView.as_view()),
     path('change-password/', ChangePasswordView.as_view()),
