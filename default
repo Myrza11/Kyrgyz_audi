@@ -1,0 +1,85 @@
+server {
+	listen 80 default_server;
+	server_name 217.151.230.35;
+
+	root /var/www/StartappMania-Backend;
+
+	index index.html index.htm index.nginx-debian.html;
+
+	location /api/ {
+        proxy_pass http://127.0.0.1:8000;  # Проксирование к Django-приложению
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location /admin/ {
+        proxy_pass http://127.0.0.1:8000;  # Проксирование к Django-приложению
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location /api/schema/swagger-ui/ {
+        proxy_pass http://127.0.0.1:8000;  # Проксирование к Django-приложению
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location /static/ {
+        alias /var/www/StartappMania-Backend/static/;  # Замените на путь к статическим файлам Django
+    }
+
+    location /media/ {
+        alias /var/www/StartappMania-Backend/media/;  # Замените на путь к медиа файлам Django
+    }
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+
+	access_log /var/log/nginx/app-access.log;
+    error_log /var/log/nginx/app-error.log;
+}
+
+server {
+    listen 666;
+    server_name localhost;
+
+    location / {
+        root /var/www/hogwarts;
+        index index.html index.htm;
+    }
+
+    # Другие настройки сервера могут следовать здесь...
+}
+
+server {
+    listen 777;
+    server_name 217.151.230.35;  # Или ваш IP адрес
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /var/www/back;  # Путь к каталогу с проектом Django
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:7777;  # Проксирование на порт, который вы указали в Gunicorn
+        proxy_redirect off;
+    }
+}
+
+server {
+    listen 111;
+    server_name 217.151.230.35;  # Или ваш IP адрес
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /var/www/kyrgzy_t2s;  # Путь к каталогу с проектом Django
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:1111;  # Проксирование на порт, который вы указали в Gunicorn
+        proxy_redirect off;
+    }
+}
