@@ -6,7 +6,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r"books", BookAPIViewSet)
 router.register(r"genres", GenresAPIViewSet)
-router.register(r"genres", AuthorsAPIViewSet)
+router.register(r"authors", AuthorsAPIViewSet)
 
 
 urlpatterns = [
@@ -15,7 +15,7 @@ urlpatterns = [
 
     path('<str:link>/create_favorite/', BookAPIViewSet.as_view({'post': 'create_favorite'})),
     path('<str:link>/delete_favorite/', BookAPIViewSet.as_view({'post': 'delete_favorite'})),
-    path('books/my_favorites/', BookAPIViewSet.as_view({'get': 'my_favorites'}), name='my-favorites'),
+    path('my_favorites/', BookAPIViewSet.as_view({'get': 'my_favorites'}), name='my-favorites'),
 
     path('user_gen_text/', GPTResponseApiView.as_view()),
     path('user_texts/', UserTextListView.as_view(), name='user-texts-list'),

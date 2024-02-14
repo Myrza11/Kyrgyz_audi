@@ -50,11 +50,12 @@ class PageSerializer(serializers.ModelSerializer):
         model = models.Page
         fields = '__all__'
 
-class FavoriteSerializer(serializers.Serializer):
+class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Favorite
         fields = "__all__"
         depth = 1
+
 
 
 

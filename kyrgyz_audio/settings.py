@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ["217.151.230.35", "127.0.0.1", "localhost"]
 INSTALLED_APPS = [
     'register',
     'books',
-
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,10 +45,10 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'drf_spectacular',
-    'drf_spectacular_sidecar',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -137,15 +137,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'register.CustomUser'
 
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # Адрес почтового сервера и порт
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587  # порт вашего почтового сервера (обычно 587 для TLS)
+EMAIL_PORT = 465  # порт вашего почтового сервера (обычно 587 для TLS)
 
 # Используем TLS (если нужно)
-EMAIL_USE_TLS = True
+EMAIL_USE_SSL = True
 
 # Учетные данные для аутентификации на почтовом сервере
 EMAIL_HOST_USER = 'bapaevmyrza038@gmail.com'
@@ -190,12 +189,35 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'SWAGGER_UI_DIST': 'SIDECAR',
-    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
-    'REDOC_DIST': 'SIDECAR',
     'TITLE': 'Your Project API',
     'DESCRIPTION': 'Your project description',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-    # OTHER SETTINGS
 }
+
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://217.151.230.35',
+    'http://localhost:5173',
+
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+]
