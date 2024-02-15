@@ -84,3 +84,19 @@ server {
         proxy_redirect off;
     }
 }
+
+server {
+    listen 888;
+    server_name 217.151.230.35;  # Или ваш IP адрес
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        alias /var/www/kyrgyz_audio(Myrza)/static/;  # Путь к каталогу со статическими файлами Django
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://127.0.0.1:8888;  # Проксирование на порт, который вы указали в Gunicorn
+        proxy_redirect off;
+    }
+}

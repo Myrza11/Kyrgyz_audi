@@ -4,6 +4,28 @@ from django.db import models
 import uuid
 from kyrgyz_audio import settings
 from gtts import gTTS
+import http.client
+import json
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+def get_tts_response(text, speaker_id, token):
+    conn = http.client.HTTPSConnection("tts.ulut.kg")
+    payload = json.dumps({
+      "text": text,
+      "speaker_id": speaker_id
+    })
+    headers = {
+      'Content-Type': 'application/json',
+      'Authorization': f'Bearer {token}'
+    }
+    conn.request("POST", "/api/tts", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+    return data
+
+text_to_convert = "Привет, как дела?"
+speaker_id = "1"
+access_token = "jaJ3H43CQwFr19B1WuOX2CuIK77fkHOcAUrmaRSP8yQfDtksZFwJZXFfiviY6c9x"
 
 
 def save_audio_file(text, file_name):
@@ -12,13 +34,14 @@ def save_audio_file(text, file_name):
     if not os.path.exists(audio_directory):
         os.makedirs(audio_directory)
 
-    audio_file_path = os.path.join('audio', file_name)
+    tts_response = get_tts_response(text, speaker_id, access_token)
+    
 
-    tts = gTTS(text, lang='ru')
-    tts.save(os.path.join(settings.MEDIA_ROOT, audio_file_path))
+    audio_file_path = os.path.join(settings.MEDIA_ROOT, 'audio', file_name)
+    with open(audio_file_path, 'wb') as f:
+        f.write(tts_response)
 
     return audio_file_path
-
 
 class Book(models.Model):
     pic = models.ImageField(upload_to='media/')
@@ -85,7 +108,7 @@ class Page(models.Model):
             audio_file_name = f"{self.book}_{self.page}.mp3"
             audio_file_path = save_audio_file(self.text, audio_file_name)
             self.audio = audio_file_path
-            self.save()
+            self.save()    
 
     def __str__(self):
         return f"{self.book} + {self.page}"

@@ -17,10 +17,11 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     )
     email = serializers.EmailField()
     name = serializers.CharField(max_length=20)
+    surename = serializers.CharField(max_length=20)
 
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'email', 'name', 'avatar', 'confirmation_code', "avatar", 'password', 'password_confirm', 'created_at', 'is_active']
+        fields = ['id', 'username', 'surename', 'email', 'name', 'avatar', 'confirmation_code', "avatar", 'password', 'password_confirm', 'created_at', 'is_active']
 
     def validate_password(self, data):
         if validate_password(data) is not None:
@@ -41,6 +42,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         user = CustomUser.objects.create_user(
             username=validated_data['username'],
             name=validated_data['name'],
+            surename=validated_data['surename'],
             email=validated_data.get('email'),
             password=validated_data['password'],
             is_active=False,
@@ -95,5 +97,5 @@ class ResetPasswordSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = '__all__'
+        fields = ['id', 'username', 'surename', 'email', 'name', 'avatar', 'created_at', 'is_active']
 
