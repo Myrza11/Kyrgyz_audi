@@ -7,6 +7,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics, status
+from django.utils.crypto import get_random_string
+from django.core.mail import send_mail
 
 
 class UserRegistrationView(APIView):
@@ -15,18 +17,41 @@ class UserRegistrationView(APIView):
 
     def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
+        data = request.data
         if serializer.is_valid():
-            user = serializer.save()
+            user = CustomUser.objects.create_user(
+                username=data['username'],
+                name=data['name'],
+                email=data.get('email'),
+                password=data['password'],
+                is_active=False,
+            )
+            confirmation_code = get_random_string(length=4, allowed_chars='0123456789')
 
-            confirmation_code = user.confirmation_code
+            user.confirmation_code = confirmation_code
+            user.save()
+
             subject = 'Confirmation code'
             message = f'Your confirmation code is: {confirmation_code}'
-            from_email = 'bapaevmyrza038@gmail.com'  
+            from_email = 'bapaevmyrza038@gmail.com'
             recipient_list = [user.email]
 
-            send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+            # Отправка на почту закомментирована
+            # send_mail(subject, message, from_email, recipient_list, fail_silently=False)
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            # Вместо отправки на почту возвращаем код в Response
+            response_data = {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'name': user.name,
+                'avatar': user.avatar.url if user.avatar else None,
+                'created_at': user.created_at,
+                'is_active': user.is_active,
+                'confirmation_code': confirmation_code,
+            }
+            return Response(response_data, status=status.HTTP_201_CREATED)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def patch(self, request):
@@ -183,7 +208,7 @@ class UserUpdateView(generics.RetrieveUpdateAPIView):
         self.perform_update(serializer)
 
         return Response(serializer.data)
-    
+
 
 class UserProfileView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]

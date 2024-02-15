@@ -11,10 +11,10 @@ router.register(r"authors", AuthorsAPIViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('<str:link>/view_page/<int:page_number>/', BookAPIViewSet.as_view({'get': 'view_page'})),
+    path('books/<str:link>/view_page/<int:page_number>/', BookAPIViewSet.as_view({'get': 'view_page'})),
 
-    path('<str:link>/create_favorite/', BookAPIViewSet.as_view({'post': 'create_favorite'})),
-    path('<str:link>/delete_favorite/', BookAPIViewSet.as_view({'post': 'delete_favorite'})),
+    path('books/<str:link>/create_favorite/', BookAPIViewSet.as_view({'post': 'create_favorite'})),
+    path('books/<str:link>/delete_favorite/', BookAPIViewSet.as_view({'post': 'delete_favorite'})),
     path('my_favorites/', BookAPIViewSet.as_view({'get': 'my_favorites'}), name='my-favorites'),
 
     path('user_gen_text/', GPTResponseApiView.as_view()),

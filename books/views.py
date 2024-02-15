@@ -37,16 +37,18 @@ class BookAPIViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='/my_favorites/')
     def my_favorites(self, request, *args, **kwargs):
-        print('my_f')
         if request.user.is_anonymous:
             return JsonResponse({'error': 'Anonymous users cannot view favorites.'}, status=403)
 
         user = request.user
-        # print(user)
         favorites = models.Favorite.objects.filter(user=user)
-        serializer = serializers.FavoriteSerializer(favorites, many=True)
 
-        return Response(serializer.data, status=200)
+        books = [favorite.book for favorite in favorites]
+
+        # Передаем контекст вручную
+        serializer = serializers.BookSerializer(books, many=True, context={'request': request})
+
+        return Response(serializer.data)
 
     @action(detail=True, methods=['post'])
     def create_favorite(self, request, *args, **kwargs):
