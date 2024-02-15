@@ -1,0 +1,61 @@
+Watching for file changes with StatReloader
+/Users/Davlet/PycharmProjects/Kyrgyz_audi/kyrgyz_audio/settings.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+February 14, 2024 - 12:22:25
+Django version 4.2.10, using settings 'kyrgyz_audio.settings'
+Starting development server at http://127.0.0.1:9999/
+Quit the server with CONTROL-C.
+
+Watching for file changes with StatReloader
+/Users/Davlet/PycharmProjects/Kyrgyz_audi/kyrgyz_audio/settings.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+February 14, 2024 - 15:14:45
+Django version 4.2.10, using settings 'kyrgyz_audio.settings'
+Starting development server at http://127.0.0.1:9999/
+Quit the server with CONTROL-C.
+
+Watching for file changes with StatReloader
+/Users/Davlet/PycharmProjects/Kyrgyz_audi/register/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+February 14, 2024 - 15:14:51
+Django version 4.2.10, using settings 'kyrgyz_audio.settings'
+Starting development server at http://127.0.0.1:9999/
+Quit the server with CONTROL-C.
+
+Watching for file changes with StatReloader
+/Users/Davlet/PycharmProjects/Kyrgyz_audi/register/urls.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+February 14, 2024 - 18:16:22
+Django version 4.2.10, using settings 'kyrgyz_audio.settings'
+Starting development server at http://127.0.0.1:9999/
+Quit the server with CONTROL-C.
+
+Watching for file changes with StatReloader
+/Users/Davlet/PycharmProjects/Kyrgyz_audi/register/urls.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+February 14, 2024 - 18:16:36
+Django version 4.2.10, using settings 'kyrgyz_audio.settings'
+Starting development server at http://127.0.0.1:9999/
+Quit the server with CONTROL-C.
+
+Watching for file changes with StatReloader
+/Users/Davlet/PycharmProjects/Kyrgyz_audi/register/urls.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+February 14, 2024 - 18:52:53
+Django version 4.2.10, using settings 'kyrgyz_audio.settings'
+Starting development server at http://127.0.0.1:9999/
+Quit the server with CONTROL-C.
+
+Watching for file changes with StatReloader
