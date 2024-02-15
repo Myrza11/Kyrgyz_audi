@@ -4,6 +4,9 @@ from django.db import models
 import uuid
 from kyrgyz_audio import settings
 from gtts import gTTS
+from django.utils.text import slugify
+from unidecode import unidecode
+
 
 
 def save_audio_file(text, file_name):
@@ -28,11 +31,10 @@ class Book(models.Model):
     author = models.ForeignKey('Author', on_delete=models.CASCADE)
     genre = models.ForeignKey('Genre', on_delete=models.CASCADE)
     link = models.CharField(max_length=255, unique=True, editable=False)
-    audio = models.FileField(upload_to='audio/', editable=False)
 
 
     def split_text_into_pages(self, text):
-        page_size = 2000
+        page_size = 3000
         words = text.split()
         pages = []
         current_page = ""
@@ -54,12 +56,8 @@ class Book(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.link:
-            self.link = str(uuid.uuid4())
-
-        if not self.audio:
-            audio_file_name = f"{self.name}.mp3"
-            audio_file_path = save_audio_file(self.text, audio_file_name)
-            self.audio = audio_file_path
+            transliterated_name = unidecode(self.name)
+            self.link = slugify(transliterated_name)
 
         super().save(*args, **kwargs)
 
@@ -110,7 +108,9 @@ class Author(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.link:
-            self.link = str(uuid.uuid4())
+            transliterated_name = unidecode(self.fullname)
+            self.link = slugify(transliterated_name)
+
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -123,7 +123,8 @@ class Genre(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.link:
-            self.link = str(uuid.uuid4())
+            transliterated_name = unidecode(self.name)
+            self.link = slugify(transliterated_name)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -138,3 +139,5 @@ class User_text(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.text}"
+
+# jaJ3H43CQwFr19B1WuOX2CuIK77fkHOcAUrmaRSP8yQfDtksZFwJZXFfiviY6c9x
