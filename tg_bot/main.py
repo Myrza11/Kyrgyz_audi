@@ -1,34 +1,27 @@
 import asyncio
-from aiogram import Bot
 import logging
-from config import bot, dp, db, set_commands
-# from handlers import (
-#     start_router,
-#     picture_router,
-#     echo_router,
-#     courses_router,
-#     free_lesson_reg_router
-# )
+from config import bot, dp, set_commands
+from db import queries
+from handlers import (
+    process_notify,
+    start_router,
+    new_text_router
+)
 
 
-async def on_startup(bot: Bot):
-    db.create_tables()
-    db.populate_tables()
+async def on_startup():
+    await process_notify()
+    queries.init_db()
+    queries.create_tables()
 
 
 async def main():
     await set_commands()
-    # добавляем роутеры
-    # dp.include_router(start_router)
-    # dp.include_router(picture_router)
-    # dp.include_router(courses_router)
-    # dp.include_router(free_lesson_reg_router)
-
-    # в самом конце
-    # dp.include_router(echo_router)
+    dp.include_router(start_router)
+    dp.include_router(new_text_router)
 
     dp.startup.register(on_startup)
-    # запуск бота
+
     await dp.start_polling(bot)
 
 

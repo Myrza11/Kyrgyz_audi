@@ -1,7 +1,6 @@
 import os
 from register.models import CustomUser
 from django.db import models
-import uuid
 from kyrgyz_audio import settings
 from gtts import gTTS
 from django.utils.text import slugify
