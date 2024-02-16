@@ -65,7 +65,7 @@ class Book(models.Model):
 
 
     def split_text_into_pages(self, text):
-        page_size = 300
+        page_size = 950
         words = text.split()
         pages = []
         current_page = ""
@@ -111,8 +111,9 @@ class Page(models.Model):
 
     def save_audio(self):
         if not self.audio:
+            translated_name = unidecode(self.book.name)
             # Создаем уникальный слаг из названия книги и номера страницы
-            slug = slugify(f"{self.book.name}_{self.page}")
+            slug = slugify(f"{translated_name}_{self.page}")
 
             # Используем уникальный слаг для имени файла
             audio_file_name = f"{slug}.mp3"
