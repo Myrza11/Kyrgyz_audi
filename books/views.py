@@ -189,36 +189,37 @@ class UserTextDetailView(generics.RetrieveAPIView):
 
 class GPTResponseApiView(APIView):
     serializer_class = serializers.TextSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
-    def get(self, request, *args, **kwargs):
-        chat_records = models.User_text.objects.filter(user=request.user)
-        chat_records_serializer = serializers.UserTextSerializer(chat_records, many=True)
-        return Response(chat_records_serializer.data, status=status.HTTP_200_OK)
+    # def get(self, request, *args, **kwargs):
+    #     chat_records = models.User_text.objects.filter(user=request.user)
+    #     chat_records_serializer = serializers.UserTextSerializer(chat_records, many=True)
+    #     return Response(chat_records_serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         serializer = serializers.TextSerializer(data=request.data)
 
         if serializer.is_valid():
             input_text = serializer.validated_data['text']
+            name = input_text[:10] if len(input_text) >= 10 else input_text
 
-            file_name = f'{uuid.uuid4()}.mp3'
+            file_name = f'{name}.mp3'
             audio_file_path = save_audio_file(input_text, file_name)
 
             audio_url = os.path.join(settings.MEDIA_URL, 'audio', file_name)
 
-            chat_record = models.User_text.objects.create(
-                user=request.user,
-                text=input_text,
-                audio_url=audio_url
-            )
+            # chat_record = models.User_text.objects.create(
+            #     user=request.user,
+            #     text=input_text,
+            #     audio_url=audio_url
+            # )
 
-            chat_record_serializer = serializers.UserTextSerializer(chat_record)
+            # chat_record_serializer = serializers.UserTextSerializer(chat_record)
 
             response_data = {
                 'text': input_text,
                 'audio_url': audio_url,
-                'chat_record': chat_record_serializer.data
+                # 'chat_record': chat_record_serializer.data
             }
 
             return Response(response_data, status=status.HTTP_200_OK)
