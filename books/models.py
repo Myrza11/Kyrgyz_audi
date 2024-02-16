@@ -120,10 +120,9 @@ class Page(models.Model):
 
             audio_file_path = save_audio_file(self.text, audio_file_name)
 
-            # Добавляем каталог с названием книги к пути
-            audio_file_path_with_book = os.path.join(self.book.name, audio_file_path)
-
-            self.audio = audio_file_path_with_book
+            # Убираем каталог с названием книги из пути
+            print(audio_file_path)
+            self.audio = audio_file_path
             self.save()
 
     def __str__(self):
