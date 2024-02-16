@@ -11,7 +11,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['pic'] = self.context['request'].build_absolute_uri(instance.pic.url)
-        representation['link'] = self.context['request'].build_absolute_uri(f'/api/v1/content/authors/{instance.link}/')
+        # representation['link'] = self.context['request'].build_absolute_uri(f'/api/v1/content/authors/{instance.link}/')
         return representation
 
 
@@ -22,10 +22,10 @@ class GenreSerializer(serializers.ModelSerializer):
         fields = "__all__"
         depth = 1
 
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['link'] = self.context['request'].build_absolute_uri(f'/api/v1/content/genres/{instance.link}/')
-        return representation
+    # def to_representation(self, instance):
+    #     representation = super().to_representation(instance)
+    #     representation['link'] = self.context['request'].build_absolute_uri(f'/api/v1/content/genres/{instance.link}/')
+    #     return representation
 
 
 class AudioField(serializers.Field):
@@ -43,7 +43,7 @@ class BookSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        representation['link'] = self.context['request'].build_absolute_uri(f'/api/v1/content/books/{instance.link}/')
+        # representation['link'] = self.context['request'].build_absolute_uri(f'/api/v1/content/books/{instance.link}/')
         return representation
 class PageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -63,4 +63,4 @@ class TextSerializer(serializers.Serializer):
 class UserTextSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User_text
-        fields = ('user', 'text', 'audio_url')
+        fields = ('text', 'audio_url')

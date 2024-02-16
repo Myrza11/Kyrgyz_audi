@@ -20,4 +20,5 @@ urlpatterns = [
     path('user_gen_text/', GPTResponseApiView.as_view()),
     path('user_texts/', UserTextListView.as_view(), name='user-texts-list'),
     path('user_texts/<int:pk>/', UserTextDetailView.as_view(), name='user-text-detail'),
+
 ]

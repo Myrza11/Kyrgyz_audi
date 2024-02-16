@@ -10,8 +10,10 @@ urlpatterns = [
     path('reset-password/', ResetPasswordView.as_view()),
     path('change-password/', ChangePasswordView.as_view()),
     path('change-username/', ChangeUsernameView.as_view()),
-    path('logout/', TokenBlacklistView.as_view(), name='token_logout'),
+    path('logout/', TokenBlacklistView.as_view()),
     path('user-list/', UserListView.as_view()),
     path('user-update/<int:pk>/', UserUpdateView.as_view()),
-    path('user-profile/', UserProfileView.as_view(), name='user-profile'),
+    path('user-profile/', UserProfileView.as_view()),
+    path('check-username/', CheckUsernameView.as_view()),
+
 ]

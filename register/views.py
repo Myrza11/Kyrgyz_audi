@@ -216,3 +216,17 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+
+class CheckUsernameView(APIView):
+    serializer_class = ChangeUsernameSerializer
+    def post(self, request):
+        username = request.data.get('username', '')
+        if username:
+            try:
+                print(CustomUser.objects.get(username=username))
+                return Response({'error': 'Username already exists'}, status=status.HTTP_400_BAD_REQUEST)
+            except:
+                return Response({'message': 'Username is available'}, status=status.HTTP_200_OK)
+
+        return Response({"error" : "Send username"}, status=status.HTTP_400_BAD_REQUEST)
