@@ -2,7 +2,6 @@ import os
 from register.models import CustomUser
 from django.db import models
 from kyrgyz_audio import settings
-from gtts import gTTS
 import http.client
 import json
 import ssl
@@ -55,7 +54,7 @@ class Book(models.Model):
 
 
     def split_text_into_pages(self, text):
-        page_size = 3000
+        page_size = 300
         words = text.split()
         pages = []
         current_page = ""
